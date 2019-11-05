@@ -1,0 +1,374 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+	<title>Desafio Java</title>
+
+	<h:outputStylesheet library="css" name="estilo.css" />
+
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{resource['imagens/icon/icon.ico']}" />
+
+	<b:navBar id="menuTop" fluid="true" fixed="top" class="nav"
+		style-class="o" sticky="true">
+
+		<div
+			style="margin-left: 46%; float: left; position: fixed; color: white;">
+			<h3>Usuário</h3>
+		</div>
+
+		<div id="logout" class="block">
+			<div id="sair">
+				<h:form>
+					<h:commandLink value="Sair"
+						style="float:right;margin-left: 20px;margin-top: 22px;color:white;"
+						action="#{loginController.logout()}">
+					</h:commandLink>
+				</h:form>
+			</div>
+
+			<h:form>
+				<a href="/desafioJava/sistema/home.jsf?faces-redirect=true"> <b:image
+						style="float:right;margin-left: 20px;margin-top: 10px;"
+						tooltipPosition="bottom" class="botaoSair" tooltip="Home"
+						height="30" width="30" value="#{resource['imagens/home.png']}"></b:image>
+				</a>
+			</h:form>
+
+			<div id="bemVindo">
+				<h:form>
+					<h:commandLink value="Bem Vindo, #{loginController.usuario.nome}"
+						disabled="true"
+						style="float:right;margin-left: 20px;margin-top: 22px;color:white;">
+					</h:commandLink>
+				</h:form>
+			</div>
+		</div>
+
+		<div id="expandirNav"></div>
+
+	</b:navBar>
+
+	<style>
+.ui-growl {
+	margin-top: 53px !important;
+	margin-right: 0px !important;
+	opacity: 1;
+	z-index: 5000 !important;
+}
+
+.ui-widget-content {
+	background: none;
+	border: none;
+	color: none;
+}
+
+.ui-panel-content.ui-widget-content {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+
+.dashboard-itens-home {
+	width: 150px;
+	height: 150px;
+	background-color: #4d4f53;
+	border-radius: 10px;
+	margin-left: 20px;
+	margin-top: 60px;
+	cursor: pointer;
+	box-shadow: 4px 4px 5px #888888 !important;
+}
+
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('#{resource[' fonts/ ffontawesome-webfont.eot ']}');
+	src: url('#{resource[' fonts/ ffontawesome-webfont.eot ']}')
+		format('embedded-opentype'),
+		url('#{resource[' fonts/ ffontawesome-webfont.woff2 ']}')
+		format('woff2'),
+		url('#{resource[' fonts/ ffontawesome-webfont.woff ']}')
+		format('woff'),
+		url('#{resource[' fonts/ ffontawesome-webfont.ttf ']}')
+		format('truetype'),
+		url('#{resource[' fonts/ ffontawesome-webfont.svg ']}') format('svg');
+	font-weight: normal;
+	font-style: normal;
+	src: url('#{resource[' fonts/ ffontawesome-webfont.eot ']}')
+		format('embedded-opentype'),
+		url('#{resource[' fonts/ ffontawesome-webfont.woff2 ']}')
+		format('woff2'),
+		url('#{resource[' fonts/ ffontawesome-webfont.woff ']}')
+		format('woff'),
+		url('#{resource[' fonts/ ffontawesome-webfont.ttf ']}')
+		format('truetype'),
+		url('#{resource[' fonts/ ffontawesome-webfont.svg ']}') format('svg');
+}
+</style>
+
+	<h:outputStylesheet library="css" name="fontawesome.css" />
+
+</h:head>
+
+<p:ajaxStatus onstart="PF('statusDialog').show()"
+	onsuccess="PF('statusDialog').hide()" />
+
+<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+	showEffect="fade" hideEffect="fade" closable="false" resizable="false"
+	style="z-index:20000;" showHeader="false">
+	<div class="loader"></div>
+</p:dialog>
+
+<h:body id="body" style="background-color:white; padding-top: 90px;">
+	<div id="container">
+		<!--  Modal de Exclusão -->
+		<h:form id="excluirForm" prependId="false">
+			<b:modal id="modalExcluir" closeOnEscape="false" backdrop="false"
+				title="Deseja mesmo excluir o usuário #{usuarioController.usuario.nome}?"
+				styleClass="modalPseudoClass" style="color:red;">
+				<div class="modal-footer fix">
+					<b:button value="Não" icon="glyphicon glyphicon-remove"
+						dismiss="modal" onclick="return false;" />
+					<b:commandButton value="" id="reloadExcluir"
+						style="margin-left: 10px;display:none;" look="primary"
+						action="#{usuarioController.limparFormulario}"
+						update="@form :itens"></b:commandButton>
+					<b:commandButton value="Sim" style="margin-left: 10px;"
+						look="success" action="#{usuarioController.deletarUsuario}"
+						oncomplete="$('#modalExcluir').modal('hide');return false;"
+						update="@form :itens">
+						<b:iconAwesome name="check"></b:iconAwesome>
+					</b:commandButton>
+				</div>
+			</b:modal>
+		</h:form>
+
+		<!-- Modal de Visualização -->
+		<h:form id="visualizarForm" prependId="false">
+			<b:modal id="modalVisualizar" closeOnEscape="false" backdrop="false"
+				title="#{usuarioController.usuario.nome}"
+				styleClass="modalPseudoClass">
+				<h:form id="formVisualizar" prependId="false">
+					<b:row>
+						<b:inputText id="nomeVis"
+							value="#{usuarioController.usuario.nome}" placeholder="Nome"
+							span="6" disabled="true" label="Nome">
+						</b:inputText>
+
+						<b:inputText mask="email" id="emailVis"
+							value="#{usuarioController.usuario.email}" placeholder="Login"
+							span="6" disabled="true" label="E-Mail">
+						</b:inputText>
+					</b:row>
+
+					<b:row style="margin-left:2px;">
+						<h:outputLabel>Telefones:</h:outputLabel>
+						<h:form>
+							<b:dataTable id="tellist" style="margin-left:10px;" span="11"
+								value="#{usuarioController.listaTelefoneUsuario}" var="telefone"
+								custom-lang-url="#{resource['js/Portuguese-Brasil.json']}">
+								<b:dataTableColumn value="#{telefone.ddd}"
+									header-style-class="btn-primary" label="DDD" order="asc" />
+								<b:dataTableColumn value="#{telefone.numero}"
+									header-style-class="btn-primary" label="Número" />
+								<b:dataTableColumn value="#{telefone.tipo}"
+									header-style-class="btn-primary" label="Tipo" />
+							</b:dataTable>
+						</h:form>
+					</b:row>
+				</h:form>
+			</b:modal>
+		</h:form>
+
+		<!-- Modal de Cadastro -->
+		<b:modal id="modalCadastro" closeOnEscape="false" backdrop="false"
+			title="Cadastro de Usuário" styleClass="modalPseudoClass">
+			<h:form id="form" prependId="false">
+				<b:row>
+					<b:inputText id="nome" value="#{usuarioController.usuario.nome}"
+						placeholder="Nome" span="6" required="true" maxlength="100"
+						requiredMessage="Nome não foi informado. Inclusão não permitida."
+						label="Nome">
+					</b:inputText>
+
+					<b:inputText id="email" mask="email"
+						value="#{usuarioController.usuario.email}" placeholder="e-mail"
+						span="6" required="true" maxlength="100"
+						requiredMessage="E-Mail não foi informado. Inclusão não permitida."
+						label="E-Mail">
+					</b:inputText>
+
+					<b:row span="12">
+						<h:outputLabel style="color:red;margin-left:30px;"
+							value="#{usuarioController.msgConfirmaSenha}"></h:outputLabel>
+					</b:row>
+
+					<b:inputSecret id="senha"
+						value="#{usuarioController.usuario.senha}" placeholder="Senha"
+						span="6" required="true" maxlength="12"
+						requiredMessage="Senha não foi informada. Inclusão não permitida."
+						label="Senha">
+					</b:inputSecret>
+
+					<b:inputSecret id="confSenha"
+						value="#{usuarioController.confirmaSenha}" placeholder="Senha"
+						span="6" maxlength="12"	label="Confirmação de Senha">
+					</b:inputSecret>
+
+				</b:row>
+
+				<b:row id="newTable">
+					<b:row>
+						<h:outputLabel style="color:red;margin-left:30px;"
+							value="#{usuarioController.msgInserirTelefone}"></h:outputLabel>
+					</b:row>
+					<b:inputText id="ddd" value="#{usuarioController.telefone.ddd}"
+						placeholder="DDD" span="2" mask="integer" label="DDD">
+					</b:inputText>
+					<b:inputText id="num" value="#{usuarioController.telefone.numero}"
+						span="3" maxlength="9" mask="integer" label="Número">
+					</b:inputText>
+					<b:selectOneMenu value="#{usuarioController.telefone.tipo}"
+						colMd="2" labelColMd="2" label="Tipo" span="4" select2="true">
+						<f:selectItem itemLabel="Selecione" itemValue="" />
+						<f:selectItem itemLabel="Celular" itemValue="Celular" />
+						<f:selectItem itemLabel="Residencial" itemValue="Residencial" />
+						<f:selectItem itemLabel="Comercial" itemValue="Comercial" />
+					</b:selectOneMenu>
+					<b:commandButton value="Inserir Telefone"
+						action="#{usuarioController.adicionarTelefone}"
+						update="@form: telTable" look="primary" size="xs"
+						style="margin-top:30px;">
+						<b:iconAwesome name="check"></b:iconAwesome>
+					</b:commandButton>
+				</b:row>
+
+				<b:row id="telTable" style="margin-left:2px;">
+					<h:outputLabel>Telefones:</h:outputLabel>
+					<h:form>
+						<b:dataTable id="tellist" style="margin-left:10px;" span="11"
+							value="#{usuarioController.listaTelefoneUsuario}" var="telefone"
+							custom-lang-url="#{resource['js/Portuguese-Brasil.json']}">
+							<b:dataTableColumn value="#{telefone.ddd}"
+								header-style-class="btn-primary" label="DDD" order="asc" />
+							<b:dataTableColumn value="#{telefone.numero}"
+								header-style-class="btn-primary" label="Número" />
+							<b:dataTableColumn value="#{telefone.tipo}"
+								header-style-class="btn-primary" label="Tipo" />
+							<b:dataTableColumn header-style-class="btn-primary" label="Ações"
+								contentStyle="text-align: center;">
+								<b:commandButton value="Excluir"
+									title="A exclusão não poderá ser desfeita."
+									action="#{usuarioController.removerTelefone()}" look="danger"
+									size="xs">
+									<b:iconAwesome name="times"></b:iconAwesome>
+									<f:setPropertyActionListener
+										target="#{usuarioController.telefone}" value="#{telefone}" />
+								</b:commandButton>
+							</b:dataTableColumn>
+						</b:dataTable>
+					</h:form>
+				</b:row>
+
+				<div class="modal-footer fix">
+					<b:commandButton value="Salvar"
+						action="#{usuarioController.salvarUsuario}"
+						oncomplete="$('#modalCadastro').modal('hide');#{usuarioController.atualizarListagem()}return false;"
+						update=":form,itens" look="success">
+						<b:iconAwesome name="check"></b:iconAwesome>
+					</b:commandButton>
+				</div>
+			</h:form>
+		</b:modal>
+
+		<!-- Listagem -->
+		<h:form id="itens" prependId="false"
+			rendered="#{loginController.usuario.nome != null}">
+			<b:growl id="growl" showSummary="true" allowDismiss="true"
+				placementFrom="bottom" placementAlign="right" />
+			<b:container id="container">
+				<b:row>
+					<b:panel>
+						<div style="height: 40px;">
+							<b:commandButton value="Novo Usuário"
+								action="#{usuarioController.limparFormulario()}" update='form'
+								oncomplete="$('#modalCadastro').modal();$('#modalCadastro_Label').html('Cadastrar Usuário');return false;"
+								icon="glyphicon glyphicon-plus" look="success"
+								style="float:right;margin-right: 50px;">
+								<f:ajax render=":form"></f:ajax>
+							</b:commandButton>
+						</div>
+					</b:panel>
+				</b:row>
+				<b:row>
+					<b:panel>
+						<b:dataTable value="#{usuarioController.listaUsuarios}"
+							var="usuario" striped="true" searching="true"
+							custom-lang-url="#{resource['js/Portuguese-Brasil.json']}">
+							<b:dataTableColumn header-style-class="btn-primary" label="Nome"
+								order="asc" value="#{usuario.nome}" />
+
+							<b:dataTableColumn header-style-class="btn-primary"
+								label="E-Mail" value="#{usuario.email}" />
+
+							<b:dataTableColumn header-style-class="btn-primary" label="Ações"
+								contentStyle="text-align: center;">
+								<b:commandButton value="Visualizar"
+									oncomplete="$('#modalVisualizar').modal();return false;"
+									update="@form: modalVisualizar"
+									action="#{usuarioController.listarTelefoneUsuario()}"
+									icon="glyphicon glyphicon-eye-open" look="info" size="xs"
+									style="margin-left: 10px;">
+									<f:ajax render=":visualizarForm"></f:ajax>
+									<f:setPropertyActionListener
+										target="#{usuarioController.usuario}" value="#{usuario}" />
+								</b:commandButton>
+								<b:commandButton value="Editar"
+									action="#{usuarioController.listarTelefoneUsuario()}"
+									oncomplete="$('#modalCadastro').modal();$('#modalCadastro_Label').html('Editar Usuário');return false;"
+									update='@form: modalCadastro' icon="glyphicon glyphicon-pencil"
+									look="warning" size="xs" style="margin-left: 10px;">
+									<f:ajax render=":form"></f:ajax>
+									<f:setPropertyActionListener
+										target="#{usuarioController.usuario}" value="#{usuario}" />
+								</b:commandButton>
+								<b:commandButton value="Excluir"
+									oncomplete="$('#modalExcluir').modal();return false;"
+									update='@form: modalExcluir' icon="glyphicon glyphicon-trash"
+									look="danger" size="xs" style="margin-left: 10px;">
+									<f:ajax render=":excluirForm"></f:ajax>
+									<f:setPropertyActionListener
+										target="#{usuarioController.usuario}" value="#{usuario}" />
+								</b:commandButton>
+							</b:dataTableColumn>
+						</b:dataTable>
+					</b:panel>
+				</b:row>
+				<div style="margin-top: 60px;"></div>
+			</b:container>
+		</h:form>
+
+		<p:panel rendered="#{loginController.usuario.nome == null}">
+			<center>
+				<h1 style="display: inline-block;">:(</h1>
+				<div class="center">
+					<a href="/desafioJava/index.jsf?faces-redirect=true">Sessão
+						Expirada! Faça Login novamente.</a>
+				</div>
+			</center>
+		</p:panel>
+	</div>
+
+	<div id="footer" style="background-color: #345BB6; z-index: 5000;">
+		<h6 style="margin-left: 10px; float: left; color: white;">&#169;Desafio
+			Java</h6>
+		<h6 style="float: right; margin-right: 10px; color: white;">Versão
+			1.0</h6>
+	</div>
+</h:body>
+</html>

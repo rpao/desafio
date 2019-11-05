@@ -1,0 +1,53 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+
+		<property name="connection.url">jdbc:postgresql://localhost:5432/postgres</property> <!-- BD Mane -->
+		<property name="connection.driver_class">org.postgresql.Driver</property> <!-- DB Driver -->
+		<property name="connection.username">postgres</property> <!-- DB User -->
+		<property name="connection.password">root</property> <!-- DB Password -->
+
+		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property> <!-- DB Dialect -->
+		<property name="hbm2ddl.auto">update</property> <!-- create / create-drop / update -->
+
+		<property name="show_sql">true</property> <!-- Show SQL in console -->
+		<property name="format_sql">true</property> <!-- Show SQL formatted -->
+
+		<!-- <mapping class="model.Usuario"/> -->
+		<!-- Mapping files -->
+		<mapping class="model.Usuario" />
+		<mapping class="model.Telefone" />
+
+	</session-factory>
+</hibernate-configuration>
+
+<!-- <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" -->
+<!-- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" -->
+<!-- xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence -->
+<!-- http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" -->
+<!-- version="2.1"> -->
+
+<!-- <persistence-unit name="persistenceUnitName" -->
+<!-- transaction-type="RESOURCE_LOCAL"> -->
+
+<!-- <properties> -->
+<!-- <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" 
+	/> -->
+<!-- <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/postgres" 
+	/> -->
+<!-- <property name="javax.persistence.jdbc.user" value="postgres" /> -->
+<!-- <property name="javax.persistence.jdbc.password" value="root" /> -->
+
+<!-- <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" 
+	/> -->
+<!-- <property name="hibernate.hbm2ddl.auto" value="update" /> -->
+
+<!-- <property name="hibernate.show_sql" value="true" /> -->
+<!-- <property name="hibernate.format_sql" value="true" /> -->
+<!-- </properties> -->
+
+<!-- </persistence-unit> -->
+<!-- </persistence> -->

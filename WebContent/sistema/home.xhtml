@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+	<title>Desafio Java</title>
+
+	<h:outputStylesheet library="css" name="estilo.css" />
+
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{resource['imagens/icon/icon.ico']}" />
+
+	<b:navBar id="menuTop" fluid="true" fixed="top" class="nav"
+		style-class="o" sticky="true">
+
+		<div
+			style="margin-left: 46%; float: left; position: fixed; color: white;">
+			<h3>Home</h3>
+		</div>
+
+		<div id="logout" class="block">
+			<div id="sair">
+				<h:form>
+					<h:commandLink value="Sair"
+						style="float:right;margin-left: 20px;margin-top: 22px;color:white;"
+						action="#{loginController.logout()}">
+					</h:commandLink>
+				</h:form>
+			</div>
+		</div>
+
+		<div id="bemVindo">
+			<h:form>
+				<h:commandLink value="Bem Vindo, #{loginController.usuario.nome}"
+					disabled="true"
+					style="float:right;margin-left: 20px;margin-top: 22px;color:white;">
+				</h:commandLink>
+			</h:form>
+		</div>
+
+		<div id="expandirNav"></div>
+
+	</b:navBar>
+
+	<style>
+.ui-growl {
+	margin-top: 53px !important;
+	margin-right: 0px !important;
+	opacity: 1;
+	z-index: 5000 !important;
+}
+
+.ui-widget-content {
+	background: none;
+	border: none;
+	color: none;
+}
+
+.ui-panel-content.ui-widget-content {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+
+.dashboard-itens-home {
+	width: 150px;
+	height: 150px;
+	background-color: #4d4f53;
+	border-radius: 10px;
+	margin-left: 20px;
+	margin-top: 60px;
+	cursor: pointer;
+	box-shadow: 4px 4px 5px #6b9ca5 !important;
+}
+
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('#{resource[' fonts/ ffontawesome-webfont.eot ']}');
+	src: url('#{resource[' fonts/ ffontawesome-webfont.eot ']}')
+		format('embedded-opentype'),
+		url('#{resource[' fonts/ ffontawesome-webfont.woff2 ']}')
+		format('woff2'),
+		url('#{resource[' fonts/ ffontawesome-webfont.woff ']}')
+		format('woff'),
+		url('#{resource[' fonts/ ffontawesome-webfont.ttf ']}')
+		format('truetype'),
+		url('#{resource[' fonts/ ffontawesome-webfont.svg ']}') format('svg');
+	font-weight: normal;
+	font-style: normal;
+	src: url('#{resource[' fonts/ ffontawesome-webfont.eot ']}')
+		format('embedded-opentype'),
+		url('#{resource[' fonts/ ffontawesome-webfont.woff2 ']}')
+		format('woff2'),
+		url('#{resource[' fonts/ ffontawesome-webfont.woff ']}')
+		format('woff'),
+		url('#{resource[' fonts/ ffontawesome-webfont.ttf ']}')
+		format('truetype'),
+		url('#{resource[' fonts/ ffontawesome-webfont.svg ']}') format('svg');
+}
+</style>
+
+	<h:outputStylesheet library="css" name="fontawesome.css" />
+
+</h:head>
+
+<p:ajaxStatus onstart="PF('statusDialog').show()"
+	onsuccess="PF('statusDialog').hide()" />
+
+<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+	showEffect="fade" hideEffect="fade" closable="false" resizable="false"
+	style="z-index:20000;" showHeader="false">
+	<div class="loader"></div>
+</p:dialog>
+
+<h:body id="body" style="background-color:white; padding-top: 90px;">
+	<div id="container" style="margin-left: 40%">
+		<div style="clear: both" />
+		<p:panel styleClass="dashboard-itens-home" id="regManualVeic"
+			title="Clique para acessar o menu de usuário"
+			rendered="#{loginController.usuario.nome != null}">
+			<center>
+				<a href="#{request.contextPath}/sistema/menu/usuario.jsf"
+					title="Clique para acessar o menu de usuário"> <b:iconAwesome
+						name="user" class="icon-dashboard"></b:iconAwesome>
+					<h3 class="text-icon-dashboard" style="font-size: 1.2em !important">Usuários</h3>
+				</a>
+			</center>
+		</p:panel>
+
+		<p:panel rendered="#{loginController.usuario.nome == null}">
+			<center>
+				<h1 style="display: inline-block;">:(</h1>
+				<div class="center">
+					<a href="/desafioJava/index.jsf?faces-redirect=true">Sessão
+						Expirada! Faça Login novamente.</a>
+				</div>
+			</center>
+		</p:panel>
+	</div>
+
+	<div id="footer" style="background-color: #345BB6; z-index: 5000;">
+		<h6 style="margin-left: 10px; float: left; color: white;">&#169;Desafio
+			Java</h6>
+		<h6 style="float: right; margin-right: 10px; color: white;">Versão
+			1.0</h6>
+	</div>
+</h:body>
+</html>

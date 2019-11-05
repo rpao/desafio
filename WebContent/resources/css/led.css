@@ -1,0 +1,101 @@
+.led-red {
+	color: white;
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    float:right;
+    margin-top: 10px;
+    background-color: #ff0a0a;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #b30000 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px;
+    -webkit-animation: blinkRed 1s infinite;
+    -moz-animation: blinkRed 1s infinite;
+    -ms-animation: blinkRed 1s infinite;
+    -o-animation: blinkRed 1s infinite;
+    animation: blinkRed 1s infinite;
+}
+
+@-webkit-keyframes blinkRed {
+    from {
+        background-color: #ff0a0a;
+    }
+    50% {
+        background-color: #A00;
+        box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #b30000 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
+    }
+    to {
+        background-color: #ff0a0a;
+    }
+}
+
+@-moz-keyframes blinkRed {
+    from {
+        background-color: #ff0a0a;
+    }
+    50% {
+        background-color: #A00;
+        box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #b30000 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
+    }
+    to {
+        background-color: #ff0a0a;
+    }
+}
+
+@-ms-keyframes blinkRed {
+    from {
+        background-color: #ff0a0a;
+    }
+    50% {
+        background-color: #A00;
+        box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #b30000 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
+    }
+    to {
+        background-color: #ff0a0a;
+    }
+}
+
+@-o-keyframes blinkRed {
+    from {
+        background-color: #ff0a0a;
+    }
+    50% {
+        background-color: #A00;
+        box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #b30000 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
+    }
+    to {
+        background-color: #ff0a0a;
+    }
+}
+
+@keyframes blinkRed {
+    from {
+        background-color: #ff0a0a;
+    }
+    50% {
+        background-color: #A00;
+        box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #b30000 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 0;
+    }
+    to {
+        background-color: #ff0a0a;
+    }
+}
+
+.led-green {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    float:right;
+    margin-top: 10px;
+    background-color: #00ff00;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #00b300 0 -1px 9px, #009900 0 2px 12px;
+}
+
+.led-gray {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #666666;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #595959 0 -1px 9px, #4d4d4d 0 2px 12px;
+}
